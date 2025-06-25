@@ -16,7 +16,7 @@ services:
       - ./extra-addons:/mnt/extra-addons
       - odoo-web-data:/var/lib/odoo
     ports:
-      - "8069:8069"
+      - "${ODOO_WEB_PORT:-8069}:8069"
     networks:
       - odoo-backend
 

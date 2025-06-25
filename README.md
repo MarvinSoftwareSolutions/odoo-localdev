@@ -13,3 +13,5 @@ project](https://github.com/Mueve-TEC/soltec-localdev).
 
 ## Usage instructions
 
+- Default port and URL: [localhost:8069](http://localhost:8069).
+
