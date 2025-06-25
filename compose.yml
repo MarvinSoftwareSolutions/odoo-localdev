@@ -2,8 +2,6 @@ name: odoo-localdev
 
 services:
   web:
-    # build:
-    #   context: .
     # image: soltec-odoo-desarrollo:1.0
     image: muevetec/soltec-odoo:1.0.6-dev
     depends_on:
@@ -44,24 +42,11 @@ services:
       start_period: 30s
       start_interval: 2s
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=admin@hola.com
-  #     - PGADMIN_DEFAULT_PASSWORD=admin
-  #   depends_on:
-  #     - database
-  #   ports:
-  #     - "5050:80"
-  #   networks:
-  #     - odoo-backend
-  #   volumes:
-  #     - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   odoo-web-data:
   postgres-data:
-  # pgadmin-data:
+
 
 networks:
   odoo-backend:

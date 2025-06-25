@@ -13,8 +13,13 @@ manage_db := compose_run + " database"
 
 
 # Odoo management --------------------------------------------------------------
+# [NOT IMPLEMENTED] Download Odoo addons as git submodules
 [group("Odoo management")]
+[group("Dev environment")]
 get-modules:
+  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "This function is not implemented yet."
+
 
 # Dev environment --------------------------------------------------------------
 # Copy all the required files to develop. WARNING: Overwrites all the config files.
@@ -22,15 +27,17 @@ get-modules:
 configure:
   cp .template.env .env
 
-# Bootstraps the project for developing
+# [NOT IMPLEMENTED] Bootstraps the project for developing
 [group("Dev environment")]
 bootstrap:
-  @echo "{{ style('command') }}Bootstrap finished{{ NORMAL }}"
+  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "This function is not implemented yet."
 
-# Uninstall and re-run the project bootstrap
+# [NOT IMPLEMENTED] Uninstall and re-run the project bootstrap
 [group("Dev environment")]
 bootstrap-refresh:
-  @echo "{{ style('command') }}Bootstrap refreshed{{ NORMAL }}"
+  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "This function is not implemented yet."
 
 
 # Services management ----------------------------------------------------------
