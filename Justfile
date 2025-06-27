@@ -15,11 +15,14 @@ manage_db := compose_run + " database"
 # Odoo management --------------------------------------------------------------
 # [NOT IMPLEMENTED] Download Odoo addons as git submodules
 [group("Odoo management")]
-[group("Dev environment")]
 get-modules:
   @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
   @echo "This function is not implemented yet."
 
+# Install Odoo addons
+[group("Odoo management")]
+install-modules:
+  sh ./scripts/copy_addons.sh
 
 # Dev environment --------------------------------------------------------------
 # Copy all the required files to develop. WARNING: Overwrites all the config files.
@@ -63,6 +66,12 @@ services-down *args="--remove-orphans":
 [group("Dev environment")]
 [group("Service management")]
 services-restart: services-down services-up
+
+# Launch shell insto the services container. Launch into Odoo by default.
+[group("Dev environment")]
+[group("Service management")]
+services-shell service="web" *args="":
+  {{compose_exec}} {{ args }} {{ service }} bash
 
 # # Database management ----------------------------------------------------------
 # # Create migration
