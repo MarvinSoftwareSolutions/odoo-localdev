@@ -14,9 +14,16 @@ project](https://github.com/Mueve-TEC/soltec-localdev).
 
 ## Dependencies
 
-- [Justfile](https://github.com/casey/just)
+- [Justfile >= 1.40.0](https://github.com/casey/just)
 - [Docker](https://www.docker.com/products/docker-desktop)
 - Rsync
+
+If you prefer you can create a virtualenv, activate it and install Just in
+there. If you use UV these are the required steps:
+
+- `uv venv`
+- `source .venv/bin/activate`
+- `uv pip install -r requirements.txt`
 
 
 ## Usage instructions
