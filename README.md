@@ -1,5 +1,7 @@
 # Odoo LocalDev
 
+![GitHub License](https://img.shields.io/badge/License-MIT-green)
+
 This repository is used for local Odoo module development. It's heavily
 inspired in the [SolTec localdev
 project](https://github.com/Mueve-TEC/soltec-localdev).
