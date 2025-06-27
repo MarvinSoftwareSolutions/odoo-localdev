@@ -16,6 +16,7 @@ project](https://github.com/Mueve-TEC/soltec-localdev).
 
 - [Justfile](https://github.com/casey/just)
 - [Docker](https://www.docker.com/products/docker-desktop)
+- Rsync
 
 
 ## Usage instructions
