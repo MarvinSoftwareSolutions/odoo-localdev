@@ -1,0 +1,85 @@
+---
+name: odoo-localdev
+
+services:
+  proxy:
+    container_name: proxy
+    image: traefik:v3.3.6
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./certs/:/etc/certs/
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:81:8080"
+    networks:
+      - public
+
+  web:
+    container_name: web
+    image: muevetec/soltec-odoo:1.0.6-dev
+    restart: "no"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.odoo_localdev.entrypoints: websecure
+      traefik.http.routers.odoo_localdev.rule: Host(`${DOMAIN}`)
+      traefik.http.routers.odoo_localdev.tls: true
+      traefik.http.routers.odoo_localdev.tls.domains[0].main: '*.${DOMAIN}'
+      traefik.http.routers.odoo_localdev.tls.domains[1].main: '${DOMAIN}'
+      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.httpOnly: "true"
+      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.secure: "true"
+    depends_on:
+      - database
+    environment:
+      HOST: ${DATABASE_HOST:-database}
+      USER: ${DATABASE_USER:-odoo}
+      PASSWORD: ${DATABASE_PASSWORD:-odoo}
+    volumes:
+      - ./extra-addons:/mnt/extra-addons
+      - ./config/odoo/odoo.conf:/etc/odoo/odoo.conf
+      - odoo-web-data:/var/lib/odoo
+    ports:
+      # - "${ODOO_WEB_PORT:-8069}:8069"
+      - "8069:8069"
+    networks:
+      - private
+      - public
+
+  database:
+    container_name: database
+    image: postgres:14
+    restart: "no"
+    environment:
+      POSTGRES_DB:  ${DATABASE_NAME:-postgres}
+      POSTGRES_USER: ${DATABASE_USER:-odoo}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-odoo}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - private
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready",
+        "-q",
+        "-d", "${DATABASE_NAME:-database}",
+        "-U", "${DATABASE_USER:-odoo}"
+      ]
+      retries: 3
+      timeout: 5s
+      interval: 15s
+      start_period: 30s
+      start_interval: 2s
+
+volumes:
+  odoo-web-data:
+  postgres-data:
+
+networks:
+  private:
+  public:
