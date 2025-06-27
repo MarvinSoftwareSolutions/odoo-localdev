@@ -1,4 +1,5 @@
 .env
 
+certs/
 extra-addons/
 submodules/
