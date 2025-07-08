@@ -107,7 +107,7 @@ db-destroy:
   docker volume rm odoo-localdev_odoo-web-data
   docker volume rm odoo-localdev_postgres-data
 
-# Destroy database and rerun migrations
-[group("Dev environment")]
-[group("Database Management")]
-db-reset: db-destroy
+# # Destroy and reconfigure the database
+# [group("Dev environment")]
+# [group("Database Management")]
+# db-reset: db-destroy
