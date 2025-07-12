@@ -13,89 +13,90 @@ manage_db := compose_run + " database"
 
 
 # Odoo management --------------------------------------------------------------
+# [group("Odoo management")]
 # [NOT IMPLEMENTED] Download Odoo addons as git submodules
-[group("Odoo management")]
 get-modules:
-  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "Not implemented"
   @echo "This function is not implemented yet."
 
+# [group("Odoo management")]
 # Install Odoo addons
-[group("Odoo management")]
 install-modules:
   sh ./scripts/copy_addons.sh
 
 # Dev environment --------------------------------------------------------------
-# Copy all the required files to develop. WARNING: Overwrites all the config files.
-[group("Dev environment")]
+# [group("Dev environment")]
+# Copy the required config files. WARNING: Overwrites existing config files.
+[confirm]
 configure:
   cp .template.env .env
 
+# [group("Dev environment")]
 # [NOT IMPLEMENTED] Bootstraps the project for developing
-[group("Dev environment")]
 bootstrap:
-  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "Not implemented"
   @echo "This function is not implemented yet."
 
+# [group("Dev environment")]
 # [NOT IMPLEMENTED] Uninstall and re-run the project bootstrap
-[group("Dev environment")]
 bootstrap-refresh:
-  @echo "{{ style('warning') }}Not implemented{{ NORMAL }}"
+  @echo "Not implemented"
   @echo "This function is not implemented yet."
 
 
 # Services management ----------------------------------------------------------
+# [group("Dev environment")]
+# [group("Service management")]
 # Manage services for the app
-[group("Dev environment")]
-[group("Service management")]
 services-up *args="-d":
   {{compose}} up {{ args }}
 
+# [group("Dev environment")]
+# [group("Service management")]
 # Show services logs
-[group("Dev environment")]
-[group("Service management")]
 services-logs service="" *args="-f":
   {{compose}} logs {{args}} {{service}}
 
+# [group("Dev environment")]
+# [group("Service management")]
 # Shut down services
-[group("Dev environment")]
-[group("Service management")]
 services-down *args="--remove-orphans":
   {{compose}} down {{ args }}
 
+# [group("Dev environment")]
+# [group("Service management")]
 # Restart services
-[group("Dev environment")]
-[group("Service management")]
 services-restart: services-down services-up
 
+# [group("Dev environment")]
+# [group("Service management")]
 # Launch shell insto the services container. Launch into Odoo by default.
-[group("Dev environment")]
-[group("Service management")]
 services-shell service="web" *args="":
   {{compose_exec}} {{ args }} {{ service }} bash
 
 # # Database management ----------------------------------------------------------
-# # Create migration
 # [group("Database Management")]
+# # Create migration
 # makemigration migration_name +options="--autogenerate":
 #   {{migrations_manager}} revision {{ options }} -m {{ migration_name }}
 #
-# # Apply migrations
 # [group("Database Management")]
+# # Apply migrations
 # migrate:
 #   {{migrations_manager}} upgrade head
 #
-# # Backup database
 # [group("Database Management")]
+# # Backup database
 # backup:
 #   {{manage_db}} /admin/bin/backup.sh
 #
-# # List available database backups
 # [group("Database Management")]
+# # List available database backups
 # list-backups:
 #   {{manage_db}} /admin/bin/list_backups.sh
 #
-# # Restore database from file named 'backup_filename'.
 # [group("Database Management")]
+# # Restore database from file named 'backup_filename'.
 # restore backup_filename:
 #   {{manage_db}} /admin/bin/restore.sh {{backup_filename}}
 #   just services-up
