@@ -100,14 +100,16 @@ services-shell service="web" *args="":
 # restore backup_filename:
 #   {{manage_db}} /admin/bin/restore.sh {{backup_filename}}
 #   just services-up
-#
-# [private]
+
 # [group("Database Management")]
-# db-destroy:
-#   just services-down
-#   docker volume rm magicmarket_database
-#
-# # Destroy database and rerun migrations
+# Stops all services and deletes the database volume
+[confirm]
+db-destroy:
+  just services-down
+  docker volume rm odoo-localdev_odoo-web-data
+  docker volume rm odoo-localdev_postgres-data
+
 # [group("Dev environment")]
 # [group("Database Management")]
-# db-reset: db-destroy migrate
+# # Destroy and reconfigure the database
+# db-reset: db-destroy
