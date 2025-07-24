@@ -3,3 +3,5 @@
 certs/
 extra-addons/
 submodules/
+
+compose.override.yml
