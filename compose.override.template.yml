@@ -27,7 +27,6 @@ services:
       # - ./certs/homologation.key:/mnt/certs/homologation.key
       # - ./certs/homologation.crt:/mnt/certs/homologation.crt
     ports:
-      - "8080:8080"
       - "8069:8069"
 
 volumes:
