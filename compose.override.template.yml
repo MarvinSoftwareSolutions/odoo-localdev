@@ -14,8 +14,8 @@ services:
       #
       # [A] Uncomment the following 2 mounted paths TO ONLY USE the addons
       # downloaded in localdev, ignoring the included in the image
-      # - ./extra-addons:/mnt/extra-addons
-      # - ./config/odoo/only_localdev_addons.odoo.conf:/etc/odoo/odoo.conf
+      - ./extra-addons:/mnt/extra-addons
+      - ./config/odoo/only_localdev_addons.odoo.conf:/etc/odoo/odoo.conf
       #
       # [B] Uncomment the following 2 mounted paths to use the addons
       # downloaded in localdev alongside the included in the image:
