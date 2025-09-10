@@ -5,7 +5,7 @@ services:
   proxy:
     hostname: proxy
     image: traefik:v3.3.6
-    restart: "no"
+    restart: "unless-stopped"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -21,16 +21,16 @@ services:
   web:
     hostname: web
     image: marvinsoftwaresolutions/odoo:16.0
-    restart: "no"
+    restart: "unless-stopped"
     labels:
       traefik.enable: true
-      traefik.http.routers.odoo_localdev.entrypoints: websecure
-      traefik.http.routers.odoo_localdev.rule: Host(`${DOMAIN}`)
-      traefik.http.routers.odoo_localdev.tls: true
-      traefik.http.routers.odoo_localdev.tls.domains[0].main: '*.${DOMAIN}'
-      traefik.http.routers.odoo_localdev.tls.domains[1].main: '${DOMAIN}'
-      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.httpOnly: "true"
-      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.secure: "true"
+      traefik.http.routers.odoo.entrypoints: web, websecure
+      traefik.http.routers.odoo.rule: Host(`${DOMAIN}`)
+      traefik.http.routers.odoo.tls: true
+      traefik.http.routers.odoo.tls.domains[0].main: '*.${DOMAIN}'
+      traefik.http.routers.odoo.tls.domains[1].main: '${DOMAIN}'
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.httpOnly: "true"
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.secure: "true"
     depends_on:
       - database
     environment:
@@ -44,7 +44,7 @@ services:
   database:
     hostname: database
     image: postgres:14
-    restart: "no"
+    restart: "unless-stopped"
     environment:
       POSTGRES_DB:  ${DATABASE_NAME:-postgres}
       POSTGRES_USER: ${DATABASE_USER:-odoo}
@@ -70,7 +70,6 @@ services:
       start_interval: 2s
 
 volumes:
-  odoo-web-data:
   postgres-data:
 
 networks:

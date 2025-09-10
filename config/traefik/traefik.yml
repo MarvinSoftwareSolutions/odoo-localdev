@@ -1,6 +1,6 @@
 # accessLog: {}
 log:
-  level: ERROR
+  level: INFO
 
 api:
   dashboard: true
