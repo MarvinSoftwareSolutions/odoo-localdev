@@ -3,8 +3,8 @@ log:
   level: ERROR
 
 api:
-  dashboard: false
-  insecure: false
+  dashboard: true
+  insecure: true
 
 providers:
   docker:

@@ -5,7 +5,7 @@ default:
   @just -l
 
 # Docker compose commands ------------------------------------------------------
-compose := "docker compose -f compose.yml"
+compose := "docker compose -f compose.yml -f compose.override.yml"
 compose_run := compose + " run --rm"
 compose_exec := compose + " exec"
 
@@ -30,6 +30,7 @@ install-modules:
 [confirm]
 configure:
   cp .template.env .env
+  cp ./compose.override.template.yml ./compose.override.yml
 
 # [group("Dev environment")]
 # [NOT IMPLEMENTED] Bootstraps the project for developing

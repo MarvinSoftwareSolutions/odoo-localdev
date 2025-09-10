@@ -3,7 +3,7 @@ name: odoo-localdev
 
 services:
   proxy:
-    container_name: proxy
+    hostname: proxy
     image: traefik:v3.3.6
     restart: "no"
     volumes:
@@ -19,8 +19,8 @@ services:
       - public
 
   web:
-    container_name: web
-    image: muevetec/soltec-odoo:1.0.6-dev
+    hostname: web
+    image: marvinsoftwaresolutions/odoo:16.0
     restart: "no"
     labels:
       traefik.enable: true
@@ -37,19 +37,12 @@ services:
       HOST: ${DATABASE_HOST:-database}
       USER: ${DATABASE_USER:-odoo}
       PASSWORD: ${DATABASE_PASSWORD:-odoo}
-    volumes:
-      - ./extra-addons:/mnt/extra-addons
-      - ./config/odoo/odoo.conf:/etc/odoo/odoo.conf
-      - odoo-web-data:/var/lib/odoo
-    ports:
-      # - "${ODOO_WEB_PORT:-8069}:8069"
-      - "8069:8069"
     networks:
       - private
       - public
 
   database:
-    container_name: database
+    hostname: database
     image: postgres:14
     restart: "no"
     environment:

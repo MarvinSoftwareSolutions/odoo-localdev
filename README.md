@@ -32,8 +32,8 @@ there. If you use UV these are the required steps:
 - Stop all services using `just services-down`.
 - Restart all services using `just services-restart`.
 
-- Default port and URL: [https://odoo.localhost/](https://odoo.localhost/).
-Accept the self signed ssl cert.
+- Default port and URL: [https://localhost/](https://localhost/). Accept the
+self signed ssl cert.
 
 ### Download an install custom modules
 
