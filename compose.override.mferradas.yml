@@ -1,0 +1,97 @@
+---
+name: odoo-localdev
+
+services:
+  proxy:
+    environment:
+      DOMAIN_TLS_EMAIL: ${DOMAIN_TLS_EMAIL}
+      CF_DNS_API_TOKEN_FILE: /run/secrets/cloudflare_api_token
+    secrets:
+      - cloudflare_api_token
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./certs/:/etc/certs/
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - public
+
+  web:
+    container_name: web
+    image: marvinsoftwaresolutions/odoo:16.0
+    restart: "no"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.odoo.entrypoints: websecure
+      traefik.http.routers.odoo.rule: Host(`${DOMAIN}`)
+      traefik.http.routers.odoo.tls: true
+      traefik.http.routers.odoo.tls.domains[0].main: '${DOMAIN}'
+      traefik.http.routers.odoo.tls.domains[0].sans: '*.${DOMAIN}'
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.httpOnly: "true"
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.secure: "true"
+    depends_on:
+      - database
+    environment:
+      HOST: ${DATABASE_HOST:-database}
+      USER: ${DATABASE_USER:-odoo}
+      PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+    volumes:
+      - ./extra-addons:/mnt/extra-addons/custom-addons
+      - ./config/odoo/odoo.conf:/etc/odoo/odoo.conf:rw
+      - ./certs/OdooTesting.key:/mnt/certs/homologation.key
+      - ./certs/OdooTesting.crt:/mnt/certs/homologation.crt
+      - odoo-web-data:/var/lib/odoo
+    ports:
+      - "8069:8069"
+    networks:
+      - private
+      - public
+
+  database:
+    container_name: database
+    image: postgres:14
+    restart: "no"
+    environment:
+      POSTGRES_DB:  ${DATABASE_NAME:-postgres}
+      POSTGRES_USER: ${DATABASE_USER:-odoo}
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - private
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [
+        "CMD",
+        "pg_isready",
+        "-q",
+        "-d", "${DATABASE_NAME:-database}",
+        "-U", "${DATABASE_USER:-odoo}"
+      ]
+      retries: 3
+      timeout: 5s
+      interval: 15s
+      start_period: 30s
+      start_interval: 2s
+
+volumes:
+  odoo-web-data:
+  postgres-data:
+
+networks:
+  private:
+  public:
+
+secrets:
+  pg_password:
+    file: secrets/pg_password
+  cloudflare_api_token:
+    file: secrets/cf_dns_api_token
