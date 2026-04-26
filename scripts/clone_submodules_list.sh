@@ -11,6 +11,10 @@ PROJECT_ROOT="$(dirname "$(readlink -f "${scripts_dir}")")"
 SUBMODULES_PATH="${PROJECT_ROOT}/submodules"
 
 declare -a submodule_git_urls_list=(
+  "git@github.com:ingadhoc/account-financial-tools.git"
+  "git@github.com:ingadhoc/account-payment.git"
+  "git@github.com:ingadhoc/odoo-argentina-ce.git"
+  "git@github.com:ingadhoc/odoo-argentina.git"
   "git@github.com:MarvinSoftwareSolutions/odoo-road-union.git"
   "git@github.com:MarvinSoftwareSolutions/odoo-union.git"
   "git@github.com:MarvinSoftwareSolutions/odoo-vialidad-cordoba.git"
@@ -19,11 +23,8 @@ declare -a submodule_git_urls_list=(
   "git@github.com:OCA/helpdesk.git"
   "git@github.com:OCA/reporting-engine.git"
   "git@github.com:OCA/vertical-association.git"
-  "git@github.com:ingadhoc/odoo-argentina.git"
-  "git@github.com:ingadhoc/odoo-argentina-ce.git"
-  "git@github.com:ingadhoc/account-financial-tools.git"
-  "git@github.com:ingadhoc/account-payment.git"
-  "git@github.com:odoomates/odooapps.git"
+  "git@github.com:OCA/web.git"
+  "git@github.com:odoomates/odooapps.git",
 )
 
 cd "${SUBMODULES_PATH}" || exit 1
