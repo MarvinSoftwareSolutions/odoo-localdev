@@ -14,10 +14,9 @@ manage_db := compose_run + " database"
 
 # Odoo management --------------------------------------------------------------
 # [group("Odoo management")]
-# [NOT IMPLEMENTED] Download Odoo addons as git submodules
-get-modules:
-  @echo "Not implemented"
-  @echo "This function is not implemented yet."
+# Download Odoo addons as git submodules
+get-modules odoo-version:
+  sh ./scripts/clone_submodules_list.sh {{ odoo-version }}
 
 # [group("Odoo management")]
 # Install Odoo addons

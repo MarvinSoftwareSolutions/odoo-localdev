@@ -1,10 +1,10 @@
 [submodule "submodules/odoo-road-union"]
 	path = submodules/odoo-road-union
-	url = https://github.com/MarvinSoftwareSolutions/odoo-road-union
+	url = git@github.com:MarvinSoftwareSolutions/odoo-road-union.git
 	branch = 16.0
 [submodule "submodules/odoo-union"]
 	path = submodules/odoo-union
-	url = https://github.com/MarvinSoftwareSolutions/odoo-union
+	url = git@github.com:MarvinSoftwareSolutions/odoo-union.git
 	branch = 16.0
 [submodule "submodules/account-reconcile"]
 	path = submodules/account-reconcile
