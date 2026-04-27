@@ -50,3 +50,7 @@
 	path = submodules/odoo-vialidad-cordoba
 	url = git@github.com:MarvinSoftwareSolutions/odoo-vialidad-cordoba.git
 	branch = 16.0
+[submodule "submodules/web"]
+	path = submodules/web
+	url = git@github.com:OCA/web.git
+	branch = 16.0
