@@ -2,6 +2,6 @@
 
 certs/
 extra-addons/
-submodules/
+secrets/
 
 compose.override.yml

@@ -1,10 +1,10 @@
 # accessLog: {}
 log:
-  level: ERROR
+  level: INFO
 
 api:
-  dashboard: false
-  insecure: false
+  dashboard: true
+  insecure: true
 
 providers:
   docker:

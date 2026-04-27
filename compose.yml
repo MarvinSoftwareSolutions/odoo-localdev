@@ -3,8 +3,8 @@ name: odoo-localdev
 
 services:
   proxy:
-    container_name: proxy
-    image: traefik:v3.3.6
+    hostname: proxy
+    image: traefik:v3.6.2
     restart: "no"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -19,39 +19,41 @@ services:
       - public
 
   web:
-    container_name: web
-    image: muevetec/soltec-odoo:1.0.6-dev
+    hostname: web
+    image: marvinsoftwaresolutions/odoo:16.0
     restart: "no"
     labels:
       traefik.enable: true
-      traefik.http.routers.odoo_localdev.entrypoints: websecure
-      traefik.http.routers.odoo_localdev.rule: Host(`${DOMAIN}`)
-      traefik.http.routers.odoo_localdev.tls: true
-      traefik.http.routers.odoo_localdev.tls.domains[0].main: '*.${DOMAIN}'
-      traefik.http.routers.odoo_localdev.tls.domains[1].main: '${DOMAIN}'
-      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.httpOnly: "true"
-      traefik.http.services.odoo_localdev.loadbalancer.sticky.cookie.secure: "true"
+      traefik.http.routers.odoo.entrypoints: web, websecure
+      traefik.http.routers.odoo.rule: Host(`${ODOO_FQDN}`)
+      traefik.http.routers.odoo.tls: true
+      traefik.http.routers.odoo.tls.domains[0].main: '*.${DOMAIN}'
+      traefik.http.routers.odoo.tls.domains[1].main: '${DOMAIN}'
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.httpOnly: "true"
+      traefik.http.services.odoo.loadbalancer.sticky.cookie.secure: "true"
     depends_on:
       - database
     environment:
       HOST: ${DATABASE_HOST:-database}
       USER: ${DATABASE_USER:-odoo}
       PASSWORD: ${DATABASE_PASSWORD:-odoo}
-    volumes:
-      - ./extra-addons:/mnt/extra-addons
-      - ./config/odoo/odoo.conf:/etc/odoo/odoo.conf
-      - odoo-web-data:/var/lib/odoo
-    ports:
-      # - "${ODOO_WEB_PORT:-8069}:8069"
-      - "8069:8069"
     networks:
       - private
       - public
 
   database:
-    container_name: database
+    hostname: database
     image: postgres:14
     restart: "no"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.db.entrypoints: web, websecure
+      traefik.http.routers.db.rule: Host(`${DATABASE_FQDN}`)
+      traefik.http.routers.db.tls: true
+      traefik.http.routers.db.tls.domains[0].main: '*.${DOMAIN}'
+      traefik.http.routers.db.tls.domains[1].main: '${DOMAIN}'
+      traefik.http.services.db.loadbalancer.sticky.cookie.httpOnly: "true"
+      traefik.http.services.db.loadbalancer.sticky.cookie.secure: "true"
     environment:
       POSTGRES_DB:  ${DATABASE_NAME:-postgres}
       POSTGRES_USER: ${DATABASE_USER:-odoo}
@@ -77,7 +79,6 @@ services:
       start_interval: 2s
 
 volumes:
-  odoo-web-data:
   postgres-data:
 
 networks:

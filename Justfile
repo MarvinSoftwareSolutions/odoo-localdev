@@ -5,7 +5,7 @@ default:
   @just -l
 
 # Docker compose commands ------------------------------------------------------
-compose := "docker compose -f compose.yml"
+compose := "docker compose -f compose.yml -f compose.override.yml"
 compose_run := compose + " run --rm"
 compose_exec := compose + " exec"
 
@@ -14,10 +14,9 @@ manage_db := compose_run + " database"
 
 # Odoo management --------------------------------------------------------------
 # [group("Odoo management")]
-# [NOT IMPLEMENTED] Download Odoo addons as git submodules
-get-modules:
-  @echo "Not implemented"
-  @echo "This function is not implemented yet."
+# Download Odoo addons as git submodules
+get-modules odoo-version:
+  sh ./scripts/clone_submodules_list.sh {{ odoo-version }}
 
 # [group("Odoo management")]
 # Install Odoo addons
@@ -30,6 +29,7 @@ install-modules:
 [confirm]
 configure:
   cp .template.env .env
+  cp ./compose.override.template.yml ./compose.override.yml
 
 # [group("Dev environment")]
 # [NOT IMPLEMENTED] Bootstraps the project for developing
