@@ -28,6 +28,10 @@ services:
       # - ./certs/homologation.crt:/mnt/certs/homologation.crt
     ports:
       - "8069:8069"
+    command:
+      - "odoo"
+      - "--dev=all"
+      - "--log-level=debug"
 
 volumes:
   odoo-web-data:
